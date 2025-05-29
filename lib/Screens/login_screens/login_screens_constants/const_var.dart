@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 const Color appBarColor = Colors.white38; // Slightly darker than white
-const Color bgColor = Colors.white70;
+const Color bgColor = Color.fromARGB(255, 208, 207, 207);
 final Color? textColor = Colors.grey[800]; // normal text colors in the screen
 final Color? hintTextColor = Colors.grey[600]; // hint text color
 const Color emailAndPasswordOutlineColor =
@@ -13,3 +13,4 @@ const Color signInTextColor = Colors.white; // login button's text's color
 const Color signUpTextColor = Colors.white;
 final Color? dividerColor = Colors.grey[600]; // divider's color
 const Color splashColor = Colors.white54;
+const Color circularProgressIndicatorColor = Colors.black;

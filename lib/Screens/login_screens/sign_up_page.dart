@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Screens/login_screens/login_screens_constants/const_var.dart';
-import 'package:flutter_auth/Screens/home_page.dart';
+import 'package:flutter_auth/Screens/login_screens/auth_page.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -33,32 +33,72 @@ class _SignUpScreenState extends State<SignUpScreen> {
     super.dispose();
   }
 
-  void signUp() async {
+  void displayErrorMessage(String message) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return const Center(child: CircularProgressIndicator());
+        return AlertDialog(
+          title: Center(
+            child: Text(message, style: TextStyle(color: textColor)),
+          ),
+        );
       },
     );
+  }
+
+  void signUp() async {
+    if (signUpEmailController.text.trim().isEmpty ||
+        signUpPasswordController.text.trim().isEmpty ||
+        signUpPasswordConfirmController.text.trim().isEmpty) {
+      if (mounted) {
+        displayErrorMessage('Please fill out the respective fields!');
+      }
+      return;
+    }
+
+    if (signUpPasswordController.text != signUpPasswordConfirmController.text) {
+      if (mounted) {
+        displayErrorMessage("Passwords don't match");
+      }
+      return;
+    }
+
+    if (mounted) {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return const Center(
+            child: CircularProgressIndicator(
+              color: circularProgressIndicatorColor,
+            ),
+          );
+        },
+      );
+    }
 
     try {
-      if (signUpPasswordController.text == signUpPasswordConfirmController) {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: signUpEmailController.text,
-          password: signUpPasswordController.text,
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: signUpEmailController.text.trim(),
+        password: signUpPasswordController.text.trim(),
+      );
+
+      if (mounted) {
+        Navigator.pop(context);
+
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute<Widget>(
+            builder: (BuildContext context) => const AuthPage(),
+          ),
+          (Route<dynamic> route) => false,
         );
       }
-      Navigator.pop(context);
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => HomePage()),
-      );
     } on FirebaseAuthException catch (e) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Error: $e')));
-      Navigator.pop(context);
+      if (mounted) {
+        Navigator.pop(context);
+        displayErrorMessage(e.code);
+      }
     }
   }
 

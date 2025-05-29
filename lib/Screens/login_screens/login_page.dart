@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Screens/login_screens/login_screens_constants/const_var.dart';
-import 'package:flutter_auth/Screens/login_screens/sign_up_page.dart';
 import 'package:logger/logger.dart';
+import 'package:flutter_auth/Screens/login_screens/auth_page.dart';
+
+import '../../main.dart';
 
 final Logger logger = Logger();
 
@@ -36,18 +38,52 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
+  void displayErrorMessage(String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Center(
+            child: Text(message, style: TextStyle(color: textColor)),
+          ),
+        );
+      },
+    );
+  }
+
   void signIn() async {
+    if (emailController.text.trim().isEmpty ||
+        passwordController.text.trim().isEmpty) {
+      if (mounted) {
+        displayErrorMessage('Please fill out the respective fields!');
+      }
+      return;
+    }
+
     try {
-      final UserCredential credential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(
-            email: emailController.text,
-            password: passwordController.text,
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return const Center(
+            child: CircularProgressIndicator(
+              color: circularProgressIndicatorColor,
+            ),
           );
+        },
+      );
+
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+
+      // global key to pop the loading dialog
+      navigatorKey.currentState?.pop();
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        logger.e('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        logger.e('Wrong password provided for that user.');
+      navigatorKey.currentState?.pop();
+      if (mounted) {
+        displayErrorMessage(e.code);
       }
     }
   }
@@ -129,6 +165,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 obscureText: true,
                 controller: passwordController,
+                enableSuggestions: false,
+                autofocus: false,
                 cursorErrorColor: Colors.red,
               ),
             ),

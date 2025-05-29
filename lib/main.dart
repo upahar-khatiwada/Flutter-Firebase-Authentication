@@ -6,6 +6,8 @@ import 'package:flutter_auth/Screens/login_screens/login_screens_constants/const
 import 'package:flutter_auth/Screens/login_screens/sign_up_page.dart';
 import 'firebase_options.dart';
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -18,21 +20,19 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // colored box to force the transition's screen to be same bg color
-    return ColoredBox(
-      color: bgColor,
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        initialRoute: '/',
-        routes: <String, WidgetBuilder>{
-          '/': (BuildContext context) => const AuthPage(),
-          '/login': (BuildContext context) => const LoginScreen(),
-          '/signup': (BuildContext context) => const SignUpScreen(),
-        },
-        theme: ThemeData(
-          scaffoldBackgroundColor: bgColor,
-          appBarTheme: const AppBarTheme(color: bgColor, elevation: 0),
-          splashColor: splashColor,
-        ),
+    return MaterialApp(
+      navigatorKey: navigatorKey,
+      debugShowCheckedModeBanner: false,
+      initialRoute: '/',
+      routes: <String, WidgetBuilder>{
+        '/': (BuildContext context) => const AuthPage(),
+        '/login': (BuildContext context) => const LoginScreen(),
+        '/signup': (BuildContext context) => const SignUpScreen(),
+      },
+      theme: ThemeData(
+        scaffoldBackgroundColor: bgColor,
+        appBarTheme: const AppBarTheme(color: bgColor, elevation: 0),
+        splashColor: splashColor,
       ),
     );
   }

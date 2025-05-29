@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Screens/login_screens/login_screens_constants/const_var.dart';
+import 'package:flutter_auth/Screens/home_page.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -31,33 +33,59 @@ class _SignUpScreenState extends State<SignUpScreen> {
     super.dispose();
   }
 
+  void signUp() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const Center(child: CircularProgressIndicator());
+      },
+    );
+
+    try {
+      if (signUpPasswordController.text == signUpPasswordConfirmController) {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: signUpEmailController.text,
+          password: signUpPasswordController.text,
+        );
+      }
+      Navigator.pop(context);
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
+    } on FirebaseAuthException catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error: $e')));
+      Navigator.pop(context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // calculating screen's width and height dynamically
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: bgColor,
-        body: Column(
+    return Scaffold(
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: textColor),
+        title: Text(
+          'Sign Up!',
+          style: TextStyle(color: textColor, letterSpacing: 2.0),
+        ),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            SizedBox(height: screenHeight * 0.1),
+            SizedBox(height: screenHeight * 0.03),
             SizedBox(
               width: screenWidth * 0.5 > 300 ? 250 : screenWidth * 0.5,
               height: screenHeight * 0.3 > 200 ? 150 : screenHeight * 0.3,
               child: Image.asset('assets/sign_up.webp', fit: BoxFit.contain),
-            ),
-            SizedBox(height: screenHeight * 0.03),
-            Text(
-              'Sign Up!',
-              style: TextStyle(
-                color: textColor,
-                fontSize: screenWidth * 0.05,
-                letterSpacing: 3.0,
-              ),
             ),
             SizedBox(height: screenHeight * 0.03),
             Padding(
@@ -138,7 +166,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 cursorErrorColor: Colors.red,
               ),
             ),
-            SizedBox(height: screenHeight * 0.03),
+            SizedBox(height: screenHeight * 0.05),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: screenHeight * 0.02),
               child: Material(
@@ -146,8 +174,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 borderRadius: BorderRadius.circular(screenHeight * 0.01),
                 clipBehavior: Clip.hardEdge,
                 child: InkWell(
-                  splashColor: splashColor,
-                  onTap: () {},
+                  onTap: signUp,
                   child: Container(
                     width: double.maxFinite,
                     height: screenHeight * 0.07,
@@ -169,63 +196,41 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
               ),
             ),
-            SizedBox(height: screenHeight * 0.03),
-            Padding(
-              padding: EdgeInsets.all(screenHeight * 0.009),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Divider(
-                      color: dividerColor,
-                      indent: screenWidth * 0.01,
-                      endIndent: screenWidth * 0.01,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(screenHeight * 0.01),
-                    child: Text(
-                      'or continue with',
-                      style: TextStyle(color: textColor),
-                    ),
-                  ),
-                  Expanded(
-                    child: Divider(
-                      color: dividerColor,
-                      indent: screenWidth * 0.01,
-                      endIndent: screenWidth * 0.01,
-                    ),
-                  ),
-                ],
-              ),
-            ),
             SizedBox(height: screenHeight * 0.02),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                LoginWith(
-                  screenHeight: screenHeight,
-                  screenWidth: screenWidth,
-                  paddingValue: 0.0001,
-                  assetLocation: 'assets/apple.png',
-                  onTap: () {},
+                Text(
+                  'Already have an account?',
+                  style: TextStyle(
+                    color: Colors.grey[800],
+                    fontSize: screenWidth * 0.04,
+                    letterSpacing: 0.5,
+                  ),
                 ),
-                LoginWith(
-                  screenHeight: screenHeight,
-                  screenWidth: screenWidth,
-                  paddingValue: 0.0001,
-                  assetLocation: 'assets/facebook1.webp',
-                  onTap: () {},
-                ),
-                LoginWith(
-                  screenHeight: screenHeight,
-                  screenWidth: screenWidth,
-                  paddingValue: 0.02,
-                  assetLocation: 'assets/google.png',
-                  onTap: () {},
+                SizedBox(width: screenWidth * 0.02),
+                Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => testPage()),
+                      // );
+                    },
+                    child: Text(
+                      'Login Now!',
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: screenWidth * 0.04,
+                        letterSpacing: 1.0,
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
-            SizedBox(height: screenHeight * 0.04),
           ],
         ),
       ),
@@ -251,7 +256,6 @@ class LoginWith extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        splashColor: splashColor,
         borderRadius: BorderRadius.circular(screenHeight * 0.01),
         onTap: () {},
         child: Container(

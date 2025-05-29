@@ -1,5 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Screens/login_screens/login_screens_constants/const_var.dart';
+import 'package:flutter_auth/Screens/login_screens/sign_up_page.dart';
+import 'package:logger/logger.dart';
+
+final Logger logger = Logger();
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -31,17 +36,30 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
+  void signIn() async {
+    try {
+      final UserCredential credential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
+            email: emailController.text,
+            password: passwordController.text,
+          );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        logger.e('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        logger.e('Wrong password provided for that user.');
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // calculating screen's width and height dynamically
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
-
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: bgColor,
-        body: Column(
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             SizedBox(height: screenHeight * 0.1),
@@ -136,8 +154,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 borderRadius: BorderRadius.circular(screenHeight * 0.01),
                 clipBehavior: Clip.hardEdge,
                 child: InkWell(
-                  splashColor: splashColor,
-                  onTap: () {},
+                  onTap: signIn,
                   child: Container(
                     width: double.maxFinite,
                     height: screenHeight * 0.07,
@@ -147,9 +164,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     child: Center(
                       child: Text(
-                        'Login',
+                        'Sign In',
                         style: TextStyle(
-                          color: signUpTextColor,
+                          color: signInTextColor,
                           fontSize: screenWidth * 0.07,
                           fontWeight: FontWeight.bold,
                         ),
@@ -229,7 +246,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 SizedBox(width: screenWidth * 0.02),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushNamed(context, '/signup');
+                  },
                   child: Text(
                     'Register Now!',
                     style: TextStyle(
@@ -266,7 +285,6 @@ class LoginWith extends StatelessWidget {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        splashColor: splashColor,
         borderRadius: BorderRadius.circular(screenHeight * 0.01),
         onTap: () {},
         child: Container(

@@ -1,54 +1,64 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Screens/login_screens/login_screens_constants/const_var.dart';
-import 'package:flutter_auth/Screens/login_screens/sign_up_page.dart';
-import 'package:logger/logger.dart';
+import 'package:flutter_auth/Screens/home_page.dart';
 
-final Logger logger = Logger();
-
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  late final TextEditingController emailController; // controller for email
-  late final TextEditingController
-  passwordController; // controller for password
+class _SignUpScreenState extends State<SignUpScreen> {
+  late final TextEditingController signUpEmailController;
+  late final TextEditingController signUpPasswordController;
+  late final TextEditingController signUpPasswordConfirmController;
 
-  // initializing the controllers
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
-
-    emailController = TextEditingController();
-    passwordController = TextEditingController();
+    signUpEmailController = TextEditingController();
+    signUpPasswordController = TextEditingController();
+    signUpPasswordConfirmController = TextEditingController();
   }
 
-  // disposing the controllers
   @override
   void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-
+    // TODO: implement dispose
+    signUpEmailController.dispose();
+    signUpPasswordController.dispose();
+    signUpPasswordConfirmController.dispose();
     super.dispose();
   }
 
-  void signIn() async {
+  void signUp() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const Center(child: CircularProgressIndicator());
+      },
+    );
+
     try {
-      final UserCredential credential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(
-            email: emailController.text,
-            password: passwordController.text,
-          );
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        logger.e('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        logger.e('Wrong password provided for that user.');
+      if (signUpPasswordController.text == signUpPasswordConfirmController) {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: signUpEmailController.text,
+          password: signUpPasswordController.text,
+        );
       }
+      Navigator.pop(context);
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
+    } on FirebaseAuthException catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error: $e')));
+      Navigator.pop(context);
     }
   }
 
@@ -57,28 +67,25 @@ class _LoginScreenState extends State<LoginScreen> {
     // calculating screen's width and height dynamically
     final double screenWidth = MediaQuery.of(context).size.width;
     final double screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: textColor),
+        title: Text(
+          'Sign Up!',
+          style: TextStyle(color: textColor, letterSpacing: 2.0),
+        ),
+        centerTitle: true,
+      ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            SizedBox(height: screenHeight * 0.1),
-            SizedBox(
-              width: screenWidth * 0.5 > 300 ? 300 : screenWidth * 0.5,
-              height: screenHeight * 0.3 > 200 ? 200 : screenHeight * 0.3,
-              child: Image.asset(
-                'assets/default_profile.png',
-                fit: BoxFit.contain,
-              ),
-            ),
             SizedBox(height: screenHeight * 0.03),
-            Text(
-              'Sign In!',
-              style: TextStyle(
-                color: textColor,
-                fontSize: screenWidth * 0.05,
-                letterSpacing: 3.0,
-              ),
+            SizedBox(
+              width: screenWidth * 0.5 > 300 ? 250 : screenWidth * 0.5,
+              height: screenHeight * 0.3 > 200 ? 150 : screenHeight * 0.3,
+              child: Image.asset('assets/sign_up.webp', fit: BoxFit.contain),
             ),
             SizedBox(height: screenHeight * 0.03),
             Padding(
@@ -101,11 +108,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   filled: true,
                   fillColor: fillColor,
                 ),
-                controller: emailController,
+                controller: signUpEmailController,
                 cursorErrorColor: Colors.red,
               ),
             ),
-            SizedBox(height: screenHeight * 0.01),
+            SizedBox(height: screenHeight * 0.02),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: screenHeight * 0.02),
               child: TextField(
@@ -128,25 +135,38 @@ class _LoginScreenState extends State<LoginScreen> {
                   prefixIcon: const Icon(Icons.password),
                 ),
                 obscureText: true,
-                controller: passwordController,
+                controller: signUpPasswordController,
                 cursorErrorColor: Colors.red,
               ),
             ),
-            SizedBox(height: screenHeight * 0.009),
-            Align(
-              alignment: Alignment.centerRight,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: screenHeight * 0.02),
-                child: InkWell(
-                  onTap: () {},
-                  child: Text(
-                    'Forgot Password?',
-                    style: TextStyle(color: textColor, letterSpacing: 1.0),
+            SizedBox(height: screenHeight * 0.02),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: screenHeight * 0.02),
+              child: TextField(
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: borderColor),
+                    borderRadius: BorderRadius.circular(screenWidth * 0.02),
                   ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(
+                      color: emailAndPasswordOutlineColor,
+                    ),
+                    borderRadius: BorderRadius.circular(screenWidth * 0.02),
+                  ),
+                  filled: true,
+                  fillColor: fillColor,
+                  alignLabelWithHint: true,
+                  hintText: 'Confirm Password',
+                  hintStyle: TextStyle(color: hintTextColor),
+                  prefixIcon: const Icon(Icons.password_sharp),
                 ),
+                obscureText: true,
+                controller: signUpPasswordConfirmController,
+                cursorErrorColor: Colors.red,
               ),
             ),
-            SizedBox(height: screenHeight * 0.03),
+            SizedBox(height: screenHeight * 0.05),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: screenHeight * 0.02),
               child: Material(
@@ -154,7 +174,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 borderRadius: BorderRadius.circular(screenHeight * 0.01),
                 clipBehavior: Clip.hardEdge,
                 child: InkWell(
-                  onTap: signIn,
+                  onTap: signUp,
                   child: Container(
                     width: double.maxFinite,
                     height: screenHeight * 0.07,
@@ -164,9 +184,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     child: Center(
                       child: Text(
-                        'Sign In',
+                        'Sign Up',
                         style: TextStyle(
-                          color: signInTextColor,
+                          color: signUpTextColor,
                           fontSize: screenWidth * 0.07,
                           fontWeight: FontWeight.bold,
                         ),
@@ -176,68 +196,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),
-            SizedBox(height: screenHeight * 0.03),
-            Padding(
-              padding: EdgeInsets.all(screenHeight * 0.009),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Divider(
-                      color: dividerColor,
-                      indent: screenWidth * 0.01,
-                      endIndent: screenWidth * 0.01,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(screenHeight * 0.007),
-                    child: Text(
-                      'or continue with',
-                      style: TextStyle(color: textColor),
-                    ),
-                  ),
-                  Expanded(
-                    child: Divider(
-                      color: dividerColor,
-                      indent: screenWidth * 0.01,
-                      endIndent: screenWidth * 0.01,
-                    ),
-                  ),
-                ],
-              ),
-            ),
             SizedBox(height: screenHeight * 0.02),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                LoginWith(
-                  screenHeight: screenHeight,
-                  screenWidth: screenWidth,
-                  paddingValue: 0.0001,
-                  assetLocation: 'assets/apple.png',
-                  onTap: () {},
-                ),
-                LoginWith(
-                  screenHeight: screenHeight,
-                  screenWidth: screenWidth,
-                  paddingValue: 0.0001,
-                  assetLocation: 'assets/facebook1.webp',
-                  onTap: () {},
-                ),
-                LoginWith(
-                  screenHeight: screenHeight,
-                  screenWidth: screenWidth,
-                  paddingValue: 0.02,
-                  assetLocation: 'assets/google.png',
-                  onTap: () {},
-                ),
-              ],
-            ),
-            SizedBox(height: screenHeight * 0.04),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  'Not a member yet?',
+                  'Already have an account?',
                   style: TextStyle(
                     color: Colors.grey[800],
                     fontSize: screenWidth * 0.04,
@@ -245,16 +209,23 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 SizedBox(width: screenWidth * 0.02),
-                InkWell(
-                  onTap: () {
-                    Navigator.pushNamed(context, '/signup');
-                  },
-                  child: Text(
-                    'Register Now!',
-                    style: TextStyle(
-                      color: Colors.red,
-                      fontSize: screenWidth * 0.04,
-                      letterSpacing: 1.0,
+                Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => testPage()),
+                      // );
+                    },
+                    child: Text(
+                      'Login Now!',
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: screenWidth * 0.04,
+                        letterSpacing: 1.0,
+                      ),
                     ),
                   ),
                 ),

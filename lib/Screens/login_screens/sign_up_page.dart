@@ -1,33 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Screens/login_screens/login_screens_constants/const_var.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  late final TextEditingController emailController; // controller for email
-  late final TextEditingController
-  passwordController; // controller for password
+class _SignUpScreenState extends State<SignUpScreen> {
+  late final TextEditingController signUpEmailController;
+  late final TextEditingController signUpPasswordController;
+  late final TextEditingController signUpPasswordConfirmController;
 
-  // initializing the controllers
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
-
-    emailController = TextEditingController();
-    passwordController = TextEditingController();
+    signUpEmailController = TextEditingController();
+    signUpPasswordController = TextEditingController();
+    signUpPasswordConfirmController = TextEditingController();
   }
 
-  // disposing the controllers
   @override
   void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-
+    // TODO: implement dispose
+    signUpEmailController.dispose();
+    signUpPasswordController.dispose();
+    signUpPasswordConfirmController.dispose();
     super.dispose();
   }
 
@@ -46,16 +46,13 @@ class _LoginScreenState extends State<LoginScreen> {
           children: <Widget>[
             SizedBox(height: screenHeight * 0.1),
             SizedBox(
-              width: screenWidth * 0.5 > 300 ? 300 : screenWidth * 0.5,
-              height: screenHeight * 0.3 > 200 ? 200 : screenHeight * 0.3,
-              child: Image.asset(
-                'assets/default_profile.png',
-                fit: BoxFit.contain,
-              ),
+              width: screenWidth * 0.5 > 300 ? 250 : screenWidth * 0.5,
+              height: screenHeight * 0.3 > 200 ? 150 : screenHeight * 0.3,
+              child: Image.asset('assets/sign_up.webp', fit: BoxFit.contain),
             ),
             SizedBox(height: screenHeight * 0.03),
             Text(
-              'Sign In!',
+              'Sign Up!',
               style: TextStyle(
                 color: textColor,
                 fontSize: screenWidth * 0.05,
@@ -83,11 +80,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   filled: true,
                   fillColor: fillColor,
                 ),
-                controller: emailController,
+                controller: signUpEmailController,
                 cursorErrorColor: Colors.red,
               ),
             ),
-            SizedBox(height: screenHeight * 0.01),
+            SizedBox(height: screenHeight * 0.02),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: screenHeight * 0.02),
               child: TextField(
@@ -110,22 +107,35 @@ class _LoginScreenState extends State<LoginScreen> {
                   prefixIcon: const Icon(Icons.password),
                 ),
                 obscureText: true,
-                controller: passwordController,
+                controller: signUpPasswordController,
                 cursorErrorColor: Colors.red,
               ),
             ),
-            SizedBox(height: screenHeight * 0.009),
-            Align(
-              alignment: Alignment.centerRight,
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: screenHeight * 0.02),
-                child: InkWell(
-                  onTap: () {},
-                  child: Text(
-                    'Forgot Password?',
-                    style: TextStyle(color: textColor, letterSpacing: 1.0),
+            SizedBox(height: screenHeight * 0.02),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: screenHeight * 0.02),
+              child: TextField(
+                decoration: InputDecoration(
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(color: borderColor),
+                    borderRadius: BorderRadius.circular(screenWidth * 0.02),
                   ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: const BorderSide(
+                      color: emailAndPasswordOutlineColor,
+                    ),
+                    borderRadius: BorderRadius.circular(screenWidth * 0.02),
+                  ),
+                  filled: true,
+                  fillColor: fillColor,
+                  alignLabelWithHint: true,
+                  hintText: 'Confirm Password',
+                  hintStyle: TextStyle(color: hintTextColor),
+                  prefixIcon: const Icon(Icons.password_sharp),
                 ),
+                obscureText: true,
+                controller: signUpPasswordConfirmController,
+                cursorErrorColor: Colors.red,
               ),
             ),
             SizedBox(height: screenHeight * 0.03),
@@ -147,7 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     child: Center(
                       child: Text(
-                        'Login',
+                        'Sign Up',
                         style: TextStyle(
                           color: signUpTextColor,
                           fontSize: screenWidth * 0.07,
@@ -172,7 +182,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.all(screenHeight * 0.007),
+                    padding: EdgeInsets.all(screenHeight * 0.01),
                     child: Text(
                       'or continue with',
                       style: TextStyle(color: textColor),
@@ -216,31 +226,6 @@ class _LoginScreenState extends State<LoginScreen> {
               ],
             ),
             SizedBox(height: screenHeight * 0.04),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Not a member yet?',
-                  style: TextStyle(
-                    color: Colors.grey[800],
-                    fontSize: screenWidth * 0.04,
-                    letterSpacing: 0.5,
-                  ),
-                ),
-                SizedBox(width: screenWidth * 0.02),
-                InkWell(
-                  onTap: () {},
-                  child: Text(
-                    'Register Now!',
-                    style: TextStyle(
-                      color: Colors.red,
-                      fontSize: screenWidth * 0.04,
-                      letterSpacing: 1.0,
-                    ),
-                  ),
-                ),
-              ],
-            ),
           ],
         ),
       ),

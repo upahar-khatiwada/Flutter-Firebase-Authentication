@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Screens/login_screens/login_screens_constants/const_var.dart';
+import 'package:flutter_auth/Screens/login_screens/sign_up_helper_methods/sign_up_with_facebook.dart';
 import 'package:flutter_auth/Screens/login_screens/sign_up_helper_methods/sign_up_with_google.dart';
 import 'package:flutter_auth/main.dart';
 import 'package:logger/logger.dart';
@@ -254,7 +255,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   screenWidth: screenWidth,
                   paddingValue: 0.0001,
                   assetLocation: 'assets/facebook1.webp',
-                  onTap: () {},
+                  onTap: signInWithFacebook,
                 ),
                 LoginWith(
                   screenHeight: screenHeight,

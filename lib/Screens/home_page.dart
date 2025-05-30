@@ -21,7 +21,10 @@ class HomePage extends StatelessWidget {
       body: Center(
         child: Column(
           children: <Widget>[
-            Text('${user.email} logged in', style: TextStyle(color: textColor)),
+            Text(
+              '${user.email} and ${user.displayName} logged in',
+              style: TextStyle(color: textColor),
+            ),
             const SizedBox(height: 10),
             ElevatedButton.icon(
               onPressed: signOut,

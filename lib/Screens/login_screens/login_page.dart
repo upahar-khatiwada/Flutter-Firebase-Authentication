@@ -247,7 +247,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   screenHeight: screenHeight,
                   screenWidth: screenWidth,
                   paddingValue: 0.0001,
-                  assetLocation: 'assets/apple.png',
+                  assetLocation: 'assets/github.png',
                   onTap: () {},
                 ),
                 LoginWith(
@@ -255,7 +255,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   screenWidth: screenWidth,
                   paddingValue: 0.0001,
                   assetLocation: 'assets/facebook1.webp',
-                  onTap: signInWithFacebook,
+                  onTap: () {
+                    signInWithFacebook(context);
+                  },
                 ),
                 LoginWith(
                   screenHeight: screenHeight,

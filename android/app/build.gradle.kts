@@ -1,11 +1,19 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
-    // START: FlutterFire Configuration
-    id("com.google.gms.google-services")
-    // END: FlutterFire Configuration
+    id("com.google.gms.google-services") // FlutterFire
     id("kotlin-android")
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
-    id("dev.flutter.flutter-gradle-plugin")
+    id("dev.flutter.flutter-gradle-plugin") // must come last
+}
+
+val dotenv = Properties().apply {
+    val envFile = File(rootDir.parentFile, ".env")
+    if (envFile.exists()) {
+        load(envFile.inputStream())
+    } else {
+        println(".env file not found in root project.")
+    }
 }
 
 android {
@@ -23,20 +31,19 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.example.flutter_auth"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = 23
         targetSdk = 33
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+
+        resValue("string", "facebook_app_id", "\"${dotenv["FACEBOOK_APP_ID"] ?: "REPLACE_ME"}\"")
+        resValue("string", "facebook_client_token", "\"${dotenv["FACEBOOK_CLIENT_TOKEN"] ?: "REPLACE_ME"}\"")
+        resValue("string", "fb_login_protocol_scheme", "\"${dotenv["FB_LOGIN_PROTOCOL_SCHEME"] ?: "REPLACE_ME"}\"")
     }
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("debug")
         }
     }

@@ -1,10 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Screens/login_screens/login_screens_constants/const_var.dart';
+import 'package:flutter_auth/Screens/login_screens/sign_up_helper_methods/sign_up_with_google.dart';
+import 'package:flutter_auth/main.dart';
 import 'package:logger/logger.dart';
-import 'package:flutter_auth/Screens/login_screens/auth_page.dart';
-
-import '../../main.dart';
 
 final Logger logger = Logger();
 
@@ -48,22 +47,20 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         );
       },
+      useRootNavigator: false,
     );
   }
 
   void signIn() async {
     if (emailController.text.trim().isEmpty ||
         passwordController.text.trim().isEmpty) {
-      if (mounted) {
-        displayErrorMessage('Please fill out the respective fields!');
-      }
+      displayErrorMessage('Please fill out the respective fields!');
       return;
     }
 
     try {
       showDialog(
         context: context,
-        barrierDismissible: false,
         builder: (BuildContext context) {
           return const Center(
             child: CircularProgressIndicator(
@@ -71,20 +68,18 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           );
         },
+        useRootNavigator: false,
       );
 
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text.trim(),
         password: passwordController.text.trim(),
       );
-
-      // global key to pop the loading dialog
-      navigatorKey.currentState?.pop();
     } on FirebaseAuthException catch (e) {
+      displayErrorMessage(e.code);
+      logger.e(e.message);
+    } finally {
       navigatorKey.currentState?.pop();
-      if (mounted) {
-        displayErrorMessage(e.code);
-      }
     }
   }
 
@@ -266,7 +261,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   screenWidth: screenWidth,
                   paddingValue: 0.02,
                   assetLocation: 'assets/google.png',
-                  onTap: () {},
+                  onTap: () {
+                    signInWithGoogle(context);
+                  },
                 ),
               ],
             ),
@@ -324,7 +321,7 @@ class LoginWith extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         borderRadius: BorderRadius.circular(screenHeight * 0.01),
-        onTap: () {},
+        onTap: onTap,
         child: Container(
           padding: EdgeInsets.all(screenHeight * paddingValue),
           width: screenWidth * 0.2,

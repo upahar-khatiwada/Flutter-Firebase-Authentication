@@ -17,15 +17,23 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Home Page', style: TextStyle(color: textColor)),
         centerTitle: true,
+        backgroundColor: appBarColor,
       ),
       body: Center(
         child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              '${user.email} and ${user.displayName} logged in',
-              style: TextStyle(color: textColor),
+              'Email: ${user.email}',
+              style: TextStyle(color: textColor, fontSize: 30),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 20),
+            Text(
+              'Display Name: ${user.displayName}',
+              style: TextStyle(color: textColor, fontSize: 30),
+            ),
+            const SizedBox(height: 20),
             ElevatedButton.icon(
               onPressed: signOut,
               label: Text('Sign Out!', style: TextStyle(color: textColor)),

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Screens/login_screens/login_screens_constants/const_var.dart';
 import 'package:flutter_auth/Screens/login_screens/auth_page.dart';
+import 'package:flutter_auth/Screens/login_screens/sign_up_helper_methods/display_error_message.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -33,32 +34,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
     super.dispose();
   }
 
-  void displayErrorMessage(String message) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Center(
-            child: Text(message, style: TextStyle(color: textColor)),
-          ),
-        );
-      },
-    );
-  }
-
   void signUp() async {
     if (signUpEmailController.text.trim().isEmpty ||
         signUpPasswordController.text.trim().isEmpty ||
         signUpPasswordConfirmController.text.trim().isEmpty) {
       if (mounted) {
-        displayErrorMessage('Please fill out the respective fields!');
+        displayErrorMessage('Please fill out the respective fields!', context);
       }
       return;
     }
 
     if (signUpPasswordController.text != signUpPasswordConfirmController.text) {
       if (mounted) {
-        displayErrorMessage("Passwords don't match");
+        displayErrorMessage("Passwords don't match", context);
       }
       return;
     }
@@ -97,7 +85,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     } on FirebaseAuthException catch (e) {
       if (mounted) {
         Navigator.pop(context);
-        displayErrorMessage(e.code);
+        displayErrorMessage(e.code, context);
       }
     }
   }

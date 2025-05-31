@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_auth/Screens/login_screens/login_screens_constants/const_var.dart';
 import 'package:flutter_auth/Screens/login_screens/sign_up_helper_methods/sign_up_with_facebook.dart';
 import 'package:flutter_auth/Screens/login_screens/sign_up_helper_methods/sign_up_with_google.dart';
+import 'package:flutter_auth/Screens/login_screens/sign_up_helper_methods/sign_up_with_twitter.dart';
 import 'package:flutter_auth/main.dart';
 import 'package:logger/logger.dart';
+import 'package:flutter_auth/Screens/login_screens/sign_up_helper_methods/display_error_message.dart';
 
 final Logger logger = Logger();
 
@@ -38,24 +40,10 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  void displayErrorMessage(String message) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Center(
-            child: Text(message, style: TextStyle(color: textColor)),
-          ),
-        );
-      },
-      useRootNavigator: false,
-    );
-  }
-
   void signIn() async {
     if (emailController.text.trim().isEmpty ||
         passwordController.text.trim().isEmpty) {
-      displayErrorMessage('Please fill out the respective fields!');
+      displayErrorMessage('Please fill out the respective fields!', context);
       return;
     }
 
@@ -77,8 +65,10 @@ class _LoginScreenState extends State<LoginScreen> {
         password: passwordController.text.trim(),
       );
     } on FirebaseAuthException catch (e) {
-      displayErrorMessage(e.code);
-      logger.e(e.message);
+      if (mounted) {
+        displayErrorMessage(e.code, context);
+        logger.e(e.message);
+      }
     } finally {
       navigatorKey.currentState?.pop();
     }
@@ -247,8 +237,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   screenHeight: screenHeight,
                   screenWidth: screenWidth,
                   paddingValue: 0.0001,
-                  assetLocation: 'assets/github.png',
-                  onTap: () {},
+                  assetLocation: 'assets/x.png',
+                  onTap: () {
+                    signInWithTwitter(context);
+                  },
                 ),
                 LoginWith(
                   screenHeight: screenHeight,

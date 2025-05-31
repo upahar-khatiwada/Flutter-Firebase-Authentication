@@ -1,11 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_auth/Screens/login_screens/sign_up_helper_methods/display_error_message.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:logger/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/main.dart';
 import 'package:flutter_auth/Screens/login_screens/login_screens_constants/const_var.dart';
-
-final Logger logger = Logger();
 
 Future<UserCredential?> signInWithFacebook(BuildContext context) async {
   try {
@@ -22,11 +20,17 @@ Future<UserCredential?> signInWithFacebook(BuildContext context) async {
       useRootNavigator: false,
     );
 
+    await FacebookAuth.instance.logOut();
+    final AccessToken? accessToken = await FacebookAuth.instance.accessToken;
+    // logger.i('Access token after logout: $accessToken'); // should print null
+
     // Trigger the sign-in flow
     final LoginResult loginResult = await FacebookAuth.instance.login(
       permissions: <String>[
         'public_profile',
       ], // add 'email' in the list for getting the email
+      loginBehavior: LoginBehavior.dialogOnly,
+      loginTracking: LoginTracking.enabled,
     );
 
     // Check if login was successful
@@ -42,7 +46,10 @@ Future<UserCredential?> signInWithFacebook(BuildContext context) async {
       );
     }
   } on FirebaseAuthException catch (e) {
-    logger.e(e.code);
+    if (context.mounted) {
+      displayErrorMessage('e.code', context);
+    }
+    // logger.e(e.code);
   } finally {
     navigatorKey.currentState?.pop();
   }

@@ -42,7 +42,7 @@ Future<UserCredential?> signInWithGoogle(BuildContext context) async {
     return await FirebaseAuth.instance.signInWithCredential(credential);
   } on FirebaseAuthException catch (e) {
     if (context.mounted) {
-      displayErrorMessage(e.code, context);
+      displayErrorMessage(e.code, 'Error', context);
     }
     // logger.e(e.code);
   } finally {

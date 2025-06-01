@@ -43,7 +43,11 @@ class _LoginScreenState extends State<LoginScreen> {
   void signIn() async {
     if (emailController.text.trim().isEmpty ||
         passwordController.text.trim().isEmpty) {
-      displayErrorMessage('Please fill out the respective fields!', context);
+      displayErrorMessage(
+        'Please fill out the respective fields!',
+        'Error',
+        context,
+      );
       return;
     }
 
@@ -66,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     } on FirebaseAuthException catch (e) {
       if (mounted) {
-        displayErrorMessage(e.code, context);
+        displayErrorMessage(e.code, 'Error', context);
         logger.e(e.message);
       }
     } finally {

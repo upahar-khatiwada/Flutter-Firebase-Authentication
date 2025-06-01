@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: <String, WidgetBuilder>{
         '/': (BuildContext context) => const AuthPage(),
-        '/login': (BuildContext context) => const LoginScreen(),
+        // '/login': (BuildContext context) => const LoginScreen(),
         '/signup': (BuildContext context) => const SignUpScreen(),
       },
       theme: ThemeData(

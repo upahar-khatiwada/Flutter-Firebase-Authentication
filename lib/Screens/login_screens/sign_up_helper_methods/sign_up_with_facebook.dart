@@ -21,7 +21,7 @@ Future<UserCredential?> signInWithFacebook(BuildContext context) async {
     );
 
     await FacebookAuth.instance.logOut();
-    final AccessToken? accessToken = await FacebookAuth.instance.accessToken;
+    // final AccessToken? accessToken = await FacebookAuth.instance.accessToken;
     // logger.i('Access token after logout: $accessToken'); // should print null
 
     // Trigger the sign-in flow
@@ -47,7 +47,7 @@ Future<UserCredential?> signInWithFacebook(BuildContext context) async {
     }
   } on FirebaseAuthException catch (e) {
     if (context.mounted) {
-      displayErrorMessage('e.code', context);
+      displayErrorMessage(e.code, 'Error', context);
     }
     // logger.e(e.code);
   } finally {

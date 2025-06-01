@@ -47,27 +47,31 @@ Future<OAuthCredential?> signInWithTwitter(BuildContext context) async {
 
       case TwitterLoginStatus.cancelledByUser:
         if (context.mounted) {
-          displayErrorMessage('Cancelled by User', context);
+          displayErrorMessage('Cancelled by User', 'Error', context);
         }
         break;
 
       case TwitterLoginStatus.error:
         if (context.mounted) {
-          displayErrorMessage('Error: ${authResult.errorMessage}', context);
+          displayErrorMessage(
+            'Error: ${authResult.errorMessage}',
+            'Error',
+            context,
+          );
         }
         // logger.e('Error: ${authResult.errorMessage}');
         break;
 
       case null:
         if (context.mounted) {
-          displayErrorMessage('Null Result', context);
+          displayErrorMessage('Null Result', 'Error', context);
         }
         // logger.e('Null Result');
         break;
     }
   } on FirebaseAuthException catch (e) {
     if (context.mounted) {
-      displayErrorMessage(e.code, context);
+      displayErrorMessage(e.code, 'Error', context);
     }
     // logger.e(e.code);
   } finally {

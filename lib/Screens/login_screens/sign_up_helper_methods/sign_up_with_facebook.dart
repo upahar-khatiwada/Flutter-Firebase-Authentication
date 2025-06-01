@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_auth/main.dart';
 import 'package:flutter_auth/Screens/login_screens/login_screens_constants/const_var.dart';
 
+// Function to sign in with facebook
 Future<UserCredential?> signInWithFacebook(BuildContext context) async {
   try {
     showDialog(
@@ -20,6 +21,7 @@ Future<UserCredential?> signInWithFacebook(BuildContext context) async {
       useRootNavigator: false,
     );
 
+    // logging out of facebook account just in case if previously some facebook account was logged in
     await FacebookAuth.instance.logOut();
     // final AccessToken? accessToken = await FacebookAuth.instance.accessToken;
     // logger.i('Access token after logout: $accessToken'); // should print null
@@ -29,18 +31,19 @@ Future<UserCredential?> signInWithFacebook(BuildContext context) async {
       permissions: <String>[
         'public_profile',
       ], // add 'email' in the list for getting the email
+      // had to remove 'email' from now as facebook isn't allowing to do so
       loginBehavior: LoginBehavior.dialogOnly,
       loginTracking: LoginTracking.enabled,
     );
 
-    // Check if login was successful
+    // check if login was successful
     if (loginResult.status == LoginStatus.success &&
         loginResult.accessToken != null) {
-      // Create a credential from the access token
+      // create a credential from the access token
       final OAuthCredential facebookAuthCredential =
           FacebookAuthProvider.credential(loginResult.accessToken!.tokenString);
 
-      // Sign in with the credential
+      // sign in with the credential
       return await FirebaseAuth.instance.signInWithCredential(
         facebookAuthCredential,
       );
@@ -51,6 +54,7 @@ Future<UserCredential?> signInWithFacebook(BuildContext context) async {
     }
     // logger.e(e.code);
   } finally {
+    // global navigator's key
     navigatorKey.currentState?.pop();
   }
   return null;

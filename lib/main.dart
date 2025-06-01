@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Screens/login_screens/auth_page.dart';
-import 'package:flutter_auth/Screens/login_screens/login_page.dart';
+import 'package:flutter_auth/Screens/login_screens/email_verification_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_auth/Screens/login_screens/login_screens_constants/const_var.dart';
 import 'package:flutter_auth/Screens/login_screens/sign_up_page.dart';
@@ -21,7 +21,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // colored box to force the transition's screen to be same bg color
     return MaterialApp(
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
@@ -30,6 +29,8 @@ class MyApp extends StatelessWidget {
         '/': (BuildContext context) => const AuthPage(),
         // '/login': (BuildContext context) => const LoginScreen(),
         '/signup': (BuildContext context) => const SignUpScreen(),
+        '/verification': (BuildContext context) =>
+            const EmailVerificationPage(),
       },
       theme: ThemeData(
         scaffoldBackgroundColor: bgColor,

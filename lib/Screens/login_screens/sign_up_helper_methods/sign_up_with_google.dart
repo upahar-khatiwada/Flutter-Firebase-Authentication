@@ -5,6 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/main.dart';
 
+// function to sign in using a google account
 Future<UserCredential?> signInWithGoogle(BuildContext context) async {
   try {
     showDialog(
@@ -17,7 +18,8 @@ Future<UserCredential?> signInWithGoogle(BuildContext context) async {
           ),
         );
       },
-      useRootNavigator: false,
+      useRootNavigator: false, // tells flutter to use closest navigator
+      // in the widget tree relative to given context
     );
 
     final GoogleSignIn googleSignIn = GoogleSignIn();

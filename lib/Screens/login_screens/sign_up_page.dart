@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Screens/login_screens/email_verification_page.dart';
 import 'package:flutter_auth/Screens/login_screens/login_screens_constants/const_var.dart';
-import 'package:flutter_auth/Screens/login_screens/auth_page.dart';
 import 'package:flutter_auth/Screens/login_screens/sign_up_helper_methods/display_error_message.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -35,6 +34,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     super.dispose();
   }
 
+  // function to sign up with email and password
   void signUp() async {
     if (signUpEmailController.text.trim().isEmpty ||
         signUpPasswordController.text.trim().isEmpty ||
@@ -77,6 +77,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             password: signUpPasswordController.text.trim(),
           );
 
+      // sending a verification email
       if (!userCredential.user!.emailVerified) {
         await userCredential.user!.sendEmailVerification();
       }
@@ -90,13 +91,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           context,
         );
 
-        // Navigator.pushAndRemoveUntil(
-        //   context,
-        //   MaterialPageRoute<Widget>(
-        //     builder: (BuildContext context) => const AuthPage(),
-        //   ),
-        //   (Route<dynamic> route) => false,
-        // );
+        // pushing the email verification screen
         Navigator.pushReplacement(
           context,
           MaterialPageRoute<Widget>(

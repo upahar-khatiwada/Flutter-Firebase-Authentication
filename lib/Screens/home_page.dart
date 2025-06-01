@@ -1,14 +1,31 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_auth/Screens/login_screens/auth_page.dart';
 import 'package:flutter_auth/Screens/login_screens/login_screens_constants/const_var.dart';
 
-class HomePage extends StatelessWidget {
-  HomePage({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   final User user = FirebaseAuth.instance.currentUser!;
 
   void signOut() async {
     await FirebaseAuth.instance.signOut();
+
+    // ensures the logout
+    if (mounted) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute<Widget>(
+          builder: (BuildContext context) => const AuthPage(),
+        ),
+        (Route<dynamic> route) => false,
+      );
+    }
   }
 
   @override

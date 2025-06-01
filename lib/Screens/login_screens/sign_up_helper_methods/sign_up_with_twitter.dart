@@ -7,6 +7,7 @@ import 'package:flutter_auth/main.dart';
 import 'package:flutter_auth/Screens/login_screens/login_screens_constants/const_var.dart';
 import 'package:flutter_auth/Screens/login_screens/sign_up_helper_methods/display_error_message.dart';
 
+// function to sign in using twitter
 Future<OAuthCredential?> signInWithTwitter(BuildContext context) async {
   try {
     showDialog(
@@ -22,6 +23,7 @@ Future<OAuthCredential?> signInWithTwitter(BuildContext context) async {
       useRootNavigator: false,
     );
 
+    // setting up twitter login with necessary api keys and secret
     final TwitterLogin twitterLogin = TwitterLogin(
       apiKey: dotenv.env['TWITTER_APIKEY']!,
       apiSecretKey: dotenv.env['TWITTER_SECRET']!,
@@ -47,27 +49,31 @@ Future<OAuthCredential?> signInWithTwitter(BuildContext context) async {
 
       case TwitterLoginStatus.cancelledByUser:
         if (context.mounted) {
-          displayErrorMessage('Cancelled by User', context);
+          displayErrorMessage('Cancelled by User', 'Error', context);
         }
         break;
 
       case TwitterLoginStatus.error:
         if (context.mounted) {
-          displayErrorMessage('Error: ${authResult.errorMessage}', context);
+          displayErrorMessage(
+            'Error: ${authResult.errorMessage}',
+            'Error',
+            context,
+          );
         }
         // logger.e('Error: ${authResult.errorMessage}');
         break;
 
       case null:
         if (context.mounted) {
-          displayErrorMessage('Null Result', context);
+          displayErrorMessage('Null Result', 'Error', context);
         }
         // logger.e('Null Result');
         break;
     }
   } on FirebaseAuthException catch (e) {
     if (context.mounted) {
-      displayErrorMessage(e.code, context);
+      displayErrorMessage(e.code, 'Error', context);
     }
     // logger.e(e.code);
   } finally {

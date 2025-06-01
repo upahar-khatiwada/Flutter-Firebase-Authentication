@@ -5,10 +5,7 @@ import 'package:flutter_auth/Screens/login_screens/sign_up_helper_methods/sign_u
 import 'package:flutter_auth/Screens/login_screens/sign_up_helper_methods/sign_up_with_google.dart';
 import 'package:flutter_auth/Screens/login_screens/sign_up_helper_methods/sign_up_with_twitter.dart';
 import 'package:flutter_auth/main.dart';
-import 'package:logger/logger.dart';
 import 'package:flutter_auth/Screens/login_screens/sign_up_helper_methods/display_error_message.dart';
-
-final Logger logger = Logger();
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -40,10 +37,15 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
+  // function to sign in using email
   void signIn() async {
     if (emailController.text.trim().isEmpty ||
         passwordController.text.trim().isEmpty) {
-      displayErrorMessage('Please fill out the respective fields!', context);
+      displayErrorMessage(
+        'Please fill out the respective fields!',
+        'Error',
+        context,
+      );
       return;
     }
 
@@ -66,8 +68,8 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     } on FirebaseAuthException catch (e) {
       if (mounted) {
-        displayErrorMessage(e.code, context);
-        logger.e(e.message);
+        displayErrorMessage(e.code, 'Error', context);
+        // logger.e(e.message);
       }
     } finally {
       navigatorKey.currentState?.pop();

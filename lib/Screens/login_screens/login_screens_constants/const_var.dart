@@ -12,5 +12,8 @@ const Color loginButtonColor = Colors.black54; // login button's color
 const Color signInTextColor = Colors.white; // login button's text's color
 const Color signUpTextColor = Colors.white;
 final Color? dividerColor = Colors.grey[600]; // divider's color
-const Color splashColor = Colors.white54;
-const Color circularProgressIndicatorColor = Colors.black;
+const Color splashColor = Colors.white54; // splash color for buttons
+const Color circularProgressIndicatorColor =
+    Colors.black; // Circular Progress Indicator's color
+const Color floatingActionButtonColor = Colors
+    .white70; // Floating Action Button's color at email verification screen

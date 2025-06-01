@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_auth/Screens/login_screens/email_verification_page.dart';
 import 'package:flutter_auth/Screens/login_screens/login_screens_constants/const_var.dart';
-import 'package:flutter_auth/Screens/login_screens/auth_page.dart';
 import 'package:flutter_auth/Screens/login_screens/sign_up_helper_methods/display_error_message.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -34,19 +34,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
     super.dispose();
   }
 
+  // function to sign up with email and password
   void signUp() async {
     if (signUpEmailController.text.trim().isEmpty ||
         signUpPasswordController.text.trim().isEmpty ||
         signUpPasswordConfirmController.text.trim().isEmpty) {
       if (mounted) {
-        displayErrorMessage('Please fill out the respective fields!', context);
+        displayErrorMessage(
+          'Please fill out the respective fields!',
+          'Error',
+          context,
+        );
       }
       return;
     }
 
     if (signUpPasswordController.text != signUpPasswordConfirmController.text) {
       if (mounted) {
-        displayErrorMessage("Passwords don't match", context);
+        displayErrorMessage("Passwords don't match", 'Error', context);
       }
       return;
     }
@@ -66,26 +71,38 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
 
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: signUpEmailController.text.trim(),
-        password: signUpPasswordController.text.trim(),
-      );
+      final UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+            email: signUpEmailController.text.trim(),
+            password: signUpPasswordController.text.trim(),
+          );
+
+      // sending a verification email
+      if (!userCredential.user!.emailVerified) {
+        await userCredential.user!.sendEmailVerification();
+      }
 
       if (mounted) {
         Navigator.pop(context);
 
-        Navigator.pushAndRemoveUntil(
+        displayErrorMessage(
+          'Verification email sent, Check your inbox!',
+          'Check Inbox',
+          context,
+        );
+
+        // pushing the email verification screen
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute<Widget>(
-            builder: (BuildContext context) => const AuthPage(),
+            builder: (BuildContext context) => const EmailVerificationPage(),
           ),
-          (Route<dynamic> route) => false,
         );
       }
     } on FirebaseAuthException catch (e) {
       if (mounted) {
         Navigator.pop(context);
-        displayErrorMessage(e.code, context);
+        displayErrorMessage(e.code, 'Error', context);
       }
     }
   }

@@ -282,38 +282,3 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 }
-
-class LoginWith extends StatelessWidget {
-  final double screenHeight, screenWidth, paddingValue;
-  final String assetLocation;
-  final VoidCallback onTap;
-  const LoginWith({
-    super.key,
-    required this.screenHeight,
-    required this.screenWidth,
-    required this.paddingValue,
-    required this.assetLocation,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(screenHeight * 0.01),
-        onTap: () {},
-        child: Container(
-          padding: EdgeInsets.all(screenHeight * paddingValue),
-          width: screenWidth * 0.2,
-          height: screenHeight * 0.08,
-          decoration: BoxDecoration(
-            color: fillColor,
-            borderRadius: BorderRadius.circular(screenHeight * 0.01),
-          ),
-          child: Image.asset(assetLocation, fit: BoxFit.contain),
-        ),
-      ),
-    );
-  }
-}

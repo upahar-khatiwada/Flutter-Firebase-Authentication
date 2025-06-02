@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_auth/Screens/login_screens/forgot_password_page.dart';
 import 'package:flutter_auth/Screens/login_screens/login_screens_constants/const_var.dart';
 import 'package:flutter_auth/Screens/login_screens/sign_up_helper_methods/sign_up_with_facebook.dart';
 import 'package:flutter_auth/Screens/login_screens/sign_up_helper_methods/sign_up_with_google.dart';
@@ -164,7 +165,15 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: screenHeight * 0.02),
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute<Widget>(
+                        builder: (BuildContext context) =>
+                            const ForgotPasswordPage(),
+                      ),
+                    );
+                  },
                   child: Text(
                     'Forgot Password?',
                     style: TextStyle(color: textColor, letterSpacing: 1.0),

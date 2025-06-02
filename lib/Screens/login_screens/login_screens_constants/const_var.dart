@@ -10,10 +10,17 @@ const Color borderColor = Colors.white; // border color of email/password field
 const Color fillColor = Colors.white54; // fill color for containers
 const Color loginButtonColor = Colors.black54; // login button's color
 const Color signInTextColor = Colors.white; // login button's text's color
-const Color signUpTextColor = Colors.white;
+const Color signUpTextColor =
+    Colors.white; // text color for sign up button's text
+const Color forgotPasswordTextColor =
+    Colors.white; // text color for reset password button's text
 final Color? dividerColor = Colors.grey[600]; // divider's color
 const Color splashColor = Colors.white54; // splash color for buttons
 const Color circularProgressIndicatorColor =
     Colors.black; // Circular Progress Indicator's color
 const Color floatingActionButtonColor = Colors
     .white70; // Floating Action Button's color at email verification screen
+const Color goBackButtonColor =
+    Colors.black12; // Color for go back button in forgot password screen
+const Color goBackButtonBorderColor =
+    Colors.redAccent; // Color for go back button's border

@@ -19,6 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
   late final TextEditingController emailController; // controller for email
   late final TextEditingController
   passwordController; // controller for password
+  bool isObscureText = true; // for viewing the password
 
   // initializing the controllers
   @override
@@ -150,8 +151,18 @@ class _LoginScreenState extends State<LoginScreen> {
                       hintText: 'Password',
                       hintStyle: TextStyle(color: hintTextColor),
                       prefixIcon: const Icon(Icons.password),
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            isObscureText = !isObscureText;
+                          });
+                        },
+                        icon: isObscureText
+                            ? const Icon(Icons.visibility)
+                            : const Icon(Icons.visibility_off),
+                      ),
                     ),
-                    obscureText: true,
+                    obscureText: isObscureText,
                     controller: passwordController,
                     enableSuggestions: false,
                     autofocus: false,

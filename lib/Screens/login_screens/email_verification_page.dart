@@ -88,65 +88,57 @@ class _EmailVerificationPageState extends State<EmailVerificationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop:
-          false, // this set to false prevents the user from getting to home page
-      // by pressing back icon in appbar
-      // this was a bug cuz of auth page
-      // there was an if condition to return user to this page if email is not verified
-      // that causes this page to be popped twice which is unusual to user
-      child: Scaffold(
-        appBar: AppBar(),
-        body: Stack(
-          children: <Widget>[
-            Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  const CircularProgressIndicator(
-                    color: circularProgressIndicatorColor,
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    'Please Verify Your E-mail',
-                    textAlign: TextAlign.center,
+    return Scaffold(
+      // appBar: AppBar(),
+      body: Stack(
+        children: <Widget>[
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                const CircularProgressIndicator(
+                  color: circularProgressIndicatorColor,
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  'Please Verify Your E-mail',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: textColor, fontSize: 20),
+                ),
+                const SizedBox(height: 10),
+                ElevatedButton.icon(
+                  onPressed: resendEmail,
+                  label: Text(
+                    'Resend Email!',
                     style: TextStyle(color: textColor, fontSize: 20),
                   ),
-                  const SizedBox(height: 10),
-                  ElevatedButton.icon(
-                    onPressed: resendEmail,
-                    label: Text(
-                      'Resend Email!',
-                      style: TextStyle(color: textColor, fontSize: 20),
-                    ),
-                    icon: const Icon(
-                      Icons.refresh,
-                      size: 30,
-                      color: circularProgressIndicatorColor,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Align(
-                alignment: Alignment.bottomRight,
-                child: FloatingActionButton(
-                  onPressed: refreshUserStatus,
-                  splashColor: splashColor,
-                  backgroundColor: floatingActionButtonColor,
-                  // backgroundColor: appBarColor,
-                  child: const Icon(
-                    Icons.navigate_next,
+                  icon: const Icon(
+                    Icons.refresh,
+                    size: 30,
                     color: circularProgressIndicatorColor,
                   ),
                 ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Align(
+              alignment: Alignment.bottomRight,
+              child: FloatingActionButton(
+                onPressed: refreshUserStatus,
+                splashColor: splashColor,
+                backgroundColor: floatingActionButtonColor,
+                // backgroundColor: appBarColor,
+                child: const Icon(
+                  Icons.navigate_next,
+                  color: circularProgressIndicatorColor,
+                ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

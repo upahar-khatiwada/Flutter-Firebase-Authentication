@@ -16,6 +16,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   late final TextEditingController signUpPasswordController;
   late final TextEditingController signUpPasswordConfirmController;
 
+  bool isObscureTextPassword = true; // for first password field
+  bool isObscureTextPasswordConfirm = true; // for password confirmation field
+
   @override
   void initState() {
     // TODO: implement initState
@@ -126,6 +129,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
                 const SizedBox(height: 15),
+                // for email field
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: TextField(
@@ -151,6 +155,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
                 const SizedBox(height: 10),
+                // first password field
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: TextField(
@@ -171,13 +176,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       hintText: 'Password',
                       hintStyle: TextStyle(color: hintTextColor),
                       prefixIcon: const Icon(Icons.password),
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            isObscureTextPassword = !isObscureTextPassword;
+                          });
+                        },
+                        icon: isObscureTextPassword
+                            ? const Icon(Icons.visibility)
+                            : const Icon(Icons.visibility_off),
+                      ),
                     ),
-                    obscureText: true,
+                    obscureText: isObscureTextPassword,
                     controller: signUpPasswordController,
                     cursorErrorColor: Colors.red,
                   ),
                 ),
                 const SizedBox(height: 10),
+                // for password confirmation field
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: TextField(
@@ -198,8 +214,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       hintText: 'Confirm Password',
                       hintStyle: TextStyle(color: hintTextColor),
                       prefixIcon: const Icon(Icons.password_sharp),
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            isObscureTextPasswordConfirm =
+                                !isObscureTextPasswordConfirm;
+                          });
+                        },
+                        icon: isObscureTextPasswordConfirm
+                            ? const Icon(Icons.visibility)
+                            : const Icon(Icons.visibility_off),
+                      ),
                     ),
-                    obscureText: true,
+                    obscureText: isObscureTextPasswordConfirm,
                     controller: signUpPasswordConfirmController,
                     cursorErrorColor: Colors.red,
                   ),

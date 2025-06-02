@@ -109,174 +109,169 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // calculating screen's width and height dynamically
-    final double screenWidth = MediaQuery.of(context).size.width;
-    final double screenHeight = MediaQuery.of(context).size.height;
-
     return Scaffold(
-      appBar: AppBar(
-        iconTheme: IconThemeData(color: textColor),
-        title: Text(
-          'Sign Up!',
-          style: TextStyle(color: textColor, letterSpacing: 2.0),
-        ),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(height: screenHeight * 0.03),
-            SizedBox(
-              width: screenWidth * 0.5 > 300 ? 250 : screenWidth * 0.5,
-              height: screenHeight * 0.3 > 200 ? 150 : screenHeight * 0.3,
-              child: Image.asset('assets/sign_up.webp', fit: BoxFit.contain),
-            ),
-            SizedBox(height: screenHeight * 0.03),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: screenHeight * 0.02),
-              child: TextField(
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: borderColor),
-                    borderRadius: BorderRadius.circular(screenWidth * 0.02),
+      appBar: AppBar(),
+      body: Center(
+        child: SingleChildScrollView(
+          child: IntrinsicWidth(
+            stepWidth: 600,
+            child: Column(
+              children: <Widget>[
+                SizedBox(
+                  width: 300,
+                  height: 200,
+                  child: Image.asset(
+                    'assets/sign_up.webp',
+                    fit: BoxFit.contain,
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: emailAndPasswordOutlineColor,
-                    ),
-                    borderRadius: BorderRadius.circular(screenWidth * 0.02),
-                  ),
-                  hintText: 'E-mail',
-                  hintStyle: TextStyle(color: hintTextColor),
-                  prefixIcon: const Icon(Icons.mail),
-                  filled: true,
-                  fillColor: fillColor,
                 ),
-                controller: signUpEmailController,
-                cursorErrorColor: Colors.red,
-              ),
-            ),
-            SizedBox(height: screenHeight * 0.02),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: screenHeight * 0.02),
-              child: TextField(
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: borderColor),
-                    borderRadius: BorderRadius.circular(screenWidth * 0.02),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: emailAndPasswordOutlineColor,
+                const SizedBox(height: 15),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(color: borderColor),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(
+                          color: emailAndPasswordOutlineColor,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      hintText: 'E-mail',
+                      hintStyle: TextStyle(color: hintTextColor),
+                      prefixIcon: const Icon(Icons.mail),
+                      filled: true,
+                      fillColor: fillColor,
                     ),
-                    borderRadius: BorderRadius.circular(screenWidth * 0.02),
+                    controller: signUpEmailController,
+                    cursorErrorColor: Colors.red,
                   ),
-                  filled: true,
-                  fillColor: fillColor,
-                  alignLabelWithHint: true,
-                  hintText: 'Password',
-                  hintStyle: TextStyle(color: hintTextColor),
-                  prefixIcon: const Icon(Icons.password),
                 ),
-                obscureText: true,
-                controller: signUpPasswordController,
-                cursorErrorColor: Colors.red,
-              ),
-            ),
-            SizedBox(height: screenHeight * 0.02),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: screenHeight * 0.02),
-              child: TextField(
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(color: borderColor),
-                    borderRadius: BorderRadius.circular(screenWidth * 0.02),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: emailAndPasswordOutlineColor,
+                const SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(color: borderColor),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(
+                          color: emailAndPasswordOutlineColor,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      filled: true,
+                      fillColor: fillColor,
+                      alignLabelWithHint: true,
+                      hintText: 'Password',
+                      hintStyle: TextStyle(color: hintTextColor),
+                      prefixIcon: const Icon(Icons.password),
                     ),
-                    borderRadius: BorderRadius.circular(screenWidth * 0.02),
+                    obscureText: true,
+                    controller: signUpPasswordController,
+                    cursorErrorColor: Colors.red,
                   ),
-                  filled: true,
-                  fillColor: fillColor,
-                  alignLabelWithHint: true,
-                  hintText: 'Confirm Password',
-                  hintStyle: TextStyle(color: hintTextColor),
-                  prefixIcon: const Icon(Icons.password_sharp),
                 ),
-                obscureText: true,
-                controller: signUpPasswordConfirmController,
-                cursorErrorColor: Colors.red,
-              ),
-            ),
-            SizedBox(height: screenHeight * 0.05),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: screenHeight * 0.02),
-              child: Material(
-                color: Colors.transparent,
-                borderRadius: BorderRadius.circular(screenHeight * 0.01),
-                clipBehavior: Clip.hardEdge,
-                child: InkWell(
-                  onTap: signUp,
-                  child: Container(
-                    width: double.maxFinite,
-                    height: screenHeight * 0.07,
-                    decoration: BoxDecoration(
-                      color: loginButtonColor,
-                      borderRadius: BorderRadius.circular(screenHeight * 0.01),
+                const SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(color: borderColor),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(
+                          color: emailAndPasswordOutlineColor,
+                        ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      filled: true,
+                      fillColor: fillColor,
+                      alignLabelWithHint: true,
+                      hintText: 'Confirm Password',
+                      hintStyle: TextStyle(color: hintTextColor),
+                      prefixIcon: const Icon(Icons.password_sharp),
                     ),
-                    child: Center(
-                      child: Text(
-                        'Sign Up',
-                        style: TextStyle(
-                          color: signUpTextColor,
-                          fontSize: screenWidth * 0.07,
-                          fontWeight: FontWeight.bold,
+                    obscureText: true,
+                    controller: signUpPasswordConfirmController,
+                    cursorErrorColor: Colors.red,
+                  ),
+                ),
+                const SizedBox(height: 40),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Material(
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.circular(10),
+                    clipBehavior: Clip.hardEdge,
+                    child: InkWell(
+                      onTap: signUp,
+                      child: Container(
+                        height: 60,
+                        decoration: BoxDecoration(
+                          color: loginButtonColor,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            'Sign Up',
+                            style: TextStyle(
+                              color: signUpTextColor,
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ),
-            SizedBox(height: screenHeight * 0.02),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'Already have an account?',
-                  style: TextStyle(
-                    color: Colors.grey[800],
-                    fontSize: screenWidth * 0.04,
-                    letterSpacing: 0.5,
-                  ),
-                ),
-                SizedBox(width: screenWidth * 0.02),
-                Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => testPage()),
-                      // );
-                    },
-                    child: Text(
-                      'Login Now!',
+
+                const SizedBox(height: 15),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      'Already have an account?',
                       style: TextStyle(
-                        color: Colors.red,
-                        fontSize: screenWidth * 0.04,
-                        letterSpacing: 1.0,
+                        color: Colors.grey[800],
+                        letterSpacing: 0.5,
+                        fontSize: 17,
+                      ),
+                      softWrap: true,
+                      overflow: TextOverflow.fade,
+                    ),
+                    const SizedBox(width: 7),
+                    Flexible(
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text(
+                          'Login Now!',
+                          style: TextStyle(
+                            color: Colors.red,
+                            letterSpacing: 1.0,
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          overflow: TextOverflow.visible,
+                          softWrap: true,
+                        ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
               ],
             ),
-          ],
+          ),
         ),
       ),
     );

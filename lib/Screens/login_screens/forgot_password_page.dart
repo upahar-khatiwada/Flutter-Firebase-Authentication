@@ -56,259 +56,79 @@ class _SignUpScreenState extends State<ForgotPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
-    // calculating screen's width and height dynamically
-    final double screenWidth = MediaQuery.of(context).size.width;
-    final double screenHeight = MediaQuery.of(context).size.height;
-
     return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              const Icon(Icons.lock, size: 100),
-              SizedBox(height: screenHeight * 0.01),
-              Text(
-                'Forgot Password',
-                style: TextStyle(
-                  color: textColor,
-                  fontSize: screenHeight * 0.04,
+      appBar: AppBar(),
+      body: SingleChildScrollView(
+        child: IntrinsicWidth(
+          stepWidth: 600,
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(
+                  height: 400,
+                  width: 350,
+                  child: Image.asset('assets/forgot.png'),
                 ),
-              ),
-              SizedBox(height: screenHeight * 0.03),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: screenHeight * 0.02),
-                child: TextField(
-                  decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: borderColor),
-                      borderRadius: BorderRadius.circular(screenWidth * 0.02),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(
-                        color: emailAndPasswordOutlineColor,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(color: borderColor),
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                      borderRadius: BorderRadius.circular(screenWidth * 0.02),
-                    ),
-                    hintText: 'Enter your e-mail',
-                    hintStyle: TextStyle(color: hintTextColor),
-                    prefixIcon: const Icon(Icons.mail),
-                    filled: true,
-                    fillColor: fillColor,
-                  ),
-                  controller: forgotEmailController,
-                  cursorErrorColor: Colors.red,
-                ),
-              ),
-              SizedBox(height: screenHeight * 0.03),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: screenHeight * 0.02),
-                child: Material(
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.circular(screenHeight * 0.01),
-                  clipBehavior: Clip.hardEdge,
-                  child: InkWell(
-                    onTap: resetPassword,
-                    child: Container(
-                      width: double.maxFinite,
-                      height: screenHeight * 0.07,
-                      decoration: BoxDecoration(
-                        color: loginButtonColor,
-                        borderRadius: BorderRadius.circular(
-                          screenHeight * 0.01,
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(
+                          color: emailAndPasswordOutlineColor,
                         ),
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                      child: Center(
-                        child: Text(
-                          'Reset Password',
-                          style: TextStyle(
-                            color: forgotPasswordTextColor,
-                            fontSize: screenWidth * 0.07,
-                            fontWeight: FontWeight.bold,
+                      hintText: 'Enter your e-mail',
+                      hintStyle: TextStyle(color: hintTextColor),
+                      prefixIcon: const Icon(Icons.mail),
+                      filled: true,
+                      fillColor: fillColor,
+                    ),
+                    controller: forgotEmailController,
+                    cursorErrorColor: Colors.red,
+                  ),
+                ),
+                const SizedBox(height: 15),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Material(
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.circular(10),
+                    clipBehavior: Clip.hardEdge,
+                    child: InkWell(
+                      onTap: resetPassword,
+                      child: Container(
+                        width: 600,
+                        height: 60,
+                        decoration: BoxDecoration(
+                          color: loginButtonColor,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            'Reset Password',
+                            style: TextStyle(
+                              color: forgotPasswordTextColor,
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              SizedBox(height: screenHeight * 0.02),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: screenHeight * 0.02),
-                child: Material(
-                  color: Colors.transparent,
-                  borderRadius: BorderRadius.circular(screenHeight * 0.01),
-                  clipBehavior: Clip.hardEdge,
-                  child: InkWell(
-                    splashColor: splashColor,
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      width: double.maxFinite,
-                      height: screenHeight * 0.07,
-                      decoration: BoxDecoration(
-                        color: goBackButtonColor,
-                        borderRadius: BorderRadius.circular(
-                          screenHeight * 0.01,
-                        ),
-                        border: Border.all(color: goBackButtonBorderColor),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Go Back!',
-                          style: TextStyle(
-                            color: forgotPasswordTextColor,
-                            fontSize: screenWidth * 0.07,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 }
-
-// Widget build(BuildContext context) {
-//   // calculating screen's width and height dynamically
-//   final double screenWidth = MediaQuery.of(context).size.width;
-//   final double screenHeight = MediaQuery.of(context).size.height;
-//
-//   return Scaffold(
-//     body: LayoutBuilder(
-//       builder: (BuildContext context, BoxConstraints constraints) {
-//         return SingleChildScrollView(
-//           child: ConstrainedBox(
-//             constraints: BoxConstraints(minHeight: constraints.maxHeight),
-//             child: Column(
-//               mainAxisAlignment: MainAxisAlignment.center,
-//               mainAxisSize: MainAxisSize.max,
-//               crossAxisAlignment: CrossAxisAlignment.center,
-//               children: <Widget>[
-//                 const Icon(Icons.lock, size: 100),
-//                 SizedBox(height: screenHeight * 0.01),
-//                 Text(
-//                   'Forgot Password',
-//                   style: TextStyle(
-//                     color: textColor,
-//                     fontSize: screenHeight * 0.04,
-//                   ),
-//                 ),
-//                 SizedBox(height: screenHeight * 0.03),
-//                 Padding(
-//                   padding: EdgeInsets.symmetric(
-//                     horizontal: screenHeight * 0.02,
-//                   ),
-//                   child: TextField(
-//                     decoration: InputDecoration(
-//                       enabledBorder: OutlineInputBorder(
-//                         borderSide: const BorderSide(color: borderColor),
-//                         borderRadius: BorderRadius.circular(
-//                           screenWidth * 0.02,
-//                         ),
-//                       ),
-//                       focusedBorder: OutlineInputBorder(
-//                         borderSide: const BorderSide(
-//                           color: emailAndPasswordOutlineColor,
-//                         ),
-//                         borderRadius: BorderRadius.circular(
-//                           screenWidth * 0.02,
-//                         ),
-//                       ),
-//                       hintText: 'Enter your e-mail',
-//                       hintStyle: TextStyle(color: hintTextColor),
-//                       prefixIcon: const Icon(Icons.mail),
-//                       filled: true,
-//                       fillColor: fillColor,
-//                     ),
-//                     controller: forgotEmailController,
-//                     cursorErrorColor: Colors.red,
-//                   ),
-//                 ),
-//                 SizedBox(height: screenHeight * 0.03),
-//                 Padding(
-//                   padding: EdgeInsets.symmetric(
-//                     horizontal: screenHeight * 0.02,
-//                   ),
-//                   child: Material(
-//                     color: Colors.transparent,
-//                     borderRadius: BorderRadius.circular(screenHeight * 0.01),
-//                     clipBehavior: Clip.hardEdge,
-//                     child: InkWell(
-//                       onTap: resetPassword,
-//                       child: Container(
-//                         width: double.maxFinite,
-//                         height: screenHeight * 0.07,
-//                         decoration: BoxDecoration(
-//                           color: loginButtonColor,
-//                           borderRadius: BorderRadius.circular(
-//                             screenHeight * 0.01,
-//                           ),
-//                         ),
-//                         child: Center(
-//                           child: Text(
-//                             'Reset Password',
-//                             style: TextStyle(
-//                               color: forgotPasswordTextColor,
-//                               fontSize: screenWidth * 0.07,
-//                               fontWeight: FontWeight.bold,
-//                             ),
-//                           ),
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-//                 SizedBox(height: screenHeight * 0.02),
-//                 Padding(
-//                   padding: EdgeInsets.symmetric(
-//                     horizontal: screenHeight * 0.02,
-//                   ),
-//                   child: Material(
-//                     color: Colors.transparent,
-//                     borderRadius: BorderRadius.circular(screenHeight * 0.01),
-//                     clipBehavior: Clip.hardEdge,
-//                     child: InkWell(
-//                       splashColor: splashColor,
-//                       onTap: () {
-//                         Navigator.pop(context);
-//                       },
-//                       child: Container(
-//                         width: double.maxFinite,
-//                         height: screenHeight * 0.07,
-//                         decoration: BoxDecoration(
-//                           color: goBackButtonColor,
-//                           borderRadius: BorderRadius.circular(
-//                             screenHeight * 0.01,
-//                           ),
-//                           border: Border.all(color: goBackButtonBorderColor),
-//                         ),
-//                         child: Center(
-//                           child: Text(
-//                             'Go Back!',
-//                             style: TextStyle(
-//                               color: forgotPasswordTextColor,
-//                               fontSize: screenWidth * 0.07,
-//                               fontWeight: FontWeight.bold,
-//                             ),
-//                           ),
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-//               ],
-//             ),
-//           ),
-//         );
-//       },
-//     ),
-//   );
-// }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_auth/Screens/login_screens/auth_page.dart';
 import 'package:flutter_auth/Screens/login_screens/email_verification_page.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_auth/Screens/login_screens/forgot_password_page.dart';
 import 'package:flutter_auth/Screens/login_screens/login_screens_constants/const_var.dart';
 import 'package:flutter_auth/Screens/login_screens/sign_up_page.dart';
 import 'firebase_options.dart';

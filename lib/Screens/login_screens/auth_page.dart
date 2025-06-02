@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_auth/Screens/home_page.dart';
+import 'package:flutter_auth/Screens/login_screens/email_verification_page.dart';
 import 'package:flutter_auth/Screens/login_screens/login_page.dart';
 import 'package:flutter_auth/Screens/login_screens/login_screens_constants/const_var.dart';
 
@@ -22,6 +23,9 @@ class AuthPage extends StatelessWidget {
               ),
             );
           } else if (snapshot.hasData) {
+            if (!snapshot.data!.emailVerified) {
+              return const EmailVerificationPage();
+            }
             return const HomePage(); // if login was successful returns home page
           } else {
             return const LoginScreen(); // else back to login screen

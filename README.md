@@ -43,6 +43,20 @@ A simple and functional Firebase authentication blueprint that can be easily int
 
 ---
 
+## 🎨 Update App's Theme
+
+You can customize the theme of the app in:
+`lib/Screens/login_screens/login_screens_constants/const_var.dart`
+
+
+This file includes values for:
+
+- Background color 
+- Text Color
+- Button Colors and more
+
+Edit the values as per your liking
+
 ---
 
 ## 🔧 Prerequisites

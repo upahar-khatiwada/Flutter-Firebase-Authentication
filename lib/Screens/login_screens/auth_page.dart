@@ -4,6 +4,9 @@ import 'package:flutter_auth/Screens/home_page.dart';
 import 'package:flutter_auth/Screens/login_screens/email_verification_page.dart';
 import 'package:flutter_auth/Screens/login_screens/login_page.dart';
 import 'package:flutter_auth/Screens/login_screens/login_screens_constants/const_var.dart';
+import 'package:logger/logger.dart';
+
+final Logger logger = Logger();
 
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});
@@ -23,7 +26,15 @@ class AuthPage extends StatelessWidget {
               ),
             );
           } else if (snapshot.hasData) {
-            if (!snapshot.data!.emailVerified) {
+            final User user = snapshot.data!;
+            final List<String> providers = user.providerData
+                .map((UserInfo p) => p.providerId)
+                .toList();
+
+            logger.i(providers);
+
+            // checking for sign up method
+            if (providers.contains('password') && !user.emailVerified) {
               return const EmailVerificationPage();
             }
             return const HomePage(); // if login was successful returns home page
